@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schema.corezoid.com/gitcall/gitcall-pimp/helm.json",
+  "type": "object",
+  "required": ["gitcall_pimp"],
+  "properties": {
+    "gitcall_pimp": {
+      "type": "object",
+      "required": ["helm"],
+      "properties": {
+        "helm": {
+          "type": "object",
+          "required": [
+            "min_replicas",
+            "max_replicas",
+            "image_pull_policy",
+            "image_pull_secrets",
+            "secrets",
+            "ingress_host",
+            "cluster_role_name",
+            "cluster_role_binding_name"
+          ],
+          "properties": {
+            "min_replicas": { "type": "number", "minimum": 1, "maximum": 1000, "default": 1 },
+            "max_replicas": { "type": "number", "minimum": 1, "maximum": 1000, "default": 1 },
+            "image_pull_policy": { "type": "string", "enum": ["Always"], "default": "Always"},
+            "image_pull_secrets": {
+              "type": "array",
+              "default": [],
+              "items": { "type": "string", "minLength": 1, "maxLength": 10000}
+            },
+            "ingress_host": { "type": "string", "minLength": 0, "maxLength": 10000, "default": "" },
+            "cluster_role_name": { "type": "string", "minLength": 1, "maxLength": 10000, "default": "" },
+            "cluster_role_binding_name": { "type": "string", "minLength": 1, "maxLength": 10000, "default": "" },
+            "secrets": {
+              "type": "array",
+              "default": [],
+              "items": {
+                "type": "object",
+                "required": ["name", "data"],
+                "properties": {
+                  "name": { "type": "string", "minLength": 1, "maxLength": 10000},
+                  "data": {
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                      "type": "object",
+                      "required": ["key"],
+                      "properties": {
+                        "env": { "type": "string", "minLength": 0, "maxLength": 10000, "default": "" },
+                        "key": { "type": "string", "minLength": 1, "maxLength": 10000, "default": "" },
+                        "define": { "type": "boolean", "default": true },
+                        "value": { "type": "string", "minLength": 0, "maxLength": 10000, "default": "" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "resources": { "$ref": "https://schema.corezoid.com/packages/kube/container_resources_v1.json" }
+          }
+        }
+      }
+    }
+  }
+}

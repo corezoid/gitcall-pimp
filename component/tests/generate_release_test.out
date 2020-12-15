@@ -1,0 +1,104 @@
+# [REQUIRED]: object.
+gitcall_pimp:
+    # [REQUIRED]
+    config:
+        # [REQUIRED]: object.
+        # Pimp API endpoint.
+        api:
+            # [REQUIRED]: object.
+            # Defines a list of auth tokens. Pimp clients should call Pimp API with a token.
+            # Add header Authorization: abscdToken.
+            # The property name does not take part in auth process.
+            # Used by humans to add some extra meaning to the token.
+            # Property patterns:
+            # .+:
+            # ''
+            auth: {}
+            # [REQUIRED]: object.
+            server:
+                # [REQUIRED]: string.
+                host: '0.0.0.0'
+                # [REQUIRED]: number.
+                port: 8080
+        # gops tool https://github.com/google/gops. Useful for profiling CPU and Memory in prod.
+        # Alternative settings:
+        # 1#
+        # enabled: false
+        gopsagent:
+            # [REQUIRED]: boolean.
+            enabled: true
+            # [REQUIRED]: string.
+            host: '127.0.0.1'
+            # [REQUIRED]: number.
+            port: 6527
+        # [REQUIRED]
+        # k8s related settings
+        k8s:
+            # Maximum time Pimp should wait response from k8s before giving up.
+            apply_timeout_ms: 10000
+            # [REQUIRED]
+            # Defines how Pimp should authorize in k8s cluster
+            # Alternative settings:
+            # 0#
+            # [REQUIRED]: string.
+            # kubeconfig: ''
+            # kubecontext: ''
+            auth:
+                # [REQUIRED]: boolean.
+                in_cluster: true
+            image_pull_secrets: []
+            # Namespaces that created with Pimp could be cached to reduce load on k8s API.
+            # Cache is lost on Pimp restart.
+            namespace_cache_ms: 86400
+            # Secrets that created with Pimp could be cached to reduce load on k8s API.
+            # Cache is lost on Pimp restart.
+            secrets_cache_ms: 86400
+        # Expose prometheus metrics. There are two ways promapp can work
+        #  * scrape - the app starts metrics server that prometheus can scrape (preferred)
+        # * push - the app itself sends metrics to prometheus server
+        # Alternative settings:
+        # 0#
+        # [REQUIRED]: boolean.
+        # enabled: true
+        # [REQUIRED]: string.
+        # metrics_host: ''
+        # [REQUIRED]: number.
+        # metrics_port: 0
+        # [REQUIRED]: string.
+        # type: 'scrape'
+
+        # 1#
+        # [REQUIRED]: boolean.
+        # enabled: true
+        # [REQUIRED]: string.
+        # push_job: ''
+        # [REQUIRED]: number.
+        # push_period_sec: 60
+        # [REQUIRED]: string.
+        # push_url: ''
+        # [REQUIRED]: string.
+        # type: 'push'
+        promserver:
+            enabled: false
+        # Sentry is a tool for tracking errors (https://sentry.io/welcome/).
+        # Alternative settings:
+        # 0#
+        # attach_stacktrace: true
+        # debug: true
+        # [REQUIRED]: string.
+        # dsn: null
+        # enabled: true
+        # environment: 'dev'
+        # [REQUIRED]: array.
+        # levels: ['panic', 'fatal', 'error', 'error']
+        sentry:
+            enabled: false
+release:
+    name: 'gitcall_pimp_release'
+    require:
+        gitcall_pimp: 'aVersion'
+    repositories:
+        gitcall_pimp:
+            source: 'local'
+            local:
+                path: '../'

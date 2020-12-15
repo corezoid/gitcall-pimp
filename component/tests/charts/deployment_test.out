@@ -1,0 +1,83 @@
+# Source: gitcall_pimp_release/charts/gitcall_pimp/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: RELEASE-NAME-gitcall-pimp-deployment
+  labels:
+    release: "RELEASE-NAME"
+    app: "gitcall"
+    tier: "pimp"
+spec:
+  selector:
+    matchLabels:
+      release: "RELEASE-NAME"
+      app: "gitcall"
+      tier: "pimp"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        checksum/config: 398fdadbca14cf5119b49289ee6bb25d9eeae011a373efc67422749d64c20da9
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9100"
+        prometheus.io/scrape: "true"
+      labels:
+        release: "RELEASE-NAME"
+        app: "gitcall"
+        tier: "pimp"
+        http: "true"
+    spec:
+      terminationGracePeriodSeconds: 240 # there is apply\delete buffer, we should wait till it is empty. 
+      serviceAccountName: RELEASE-NAME-gitcall-pimp-service-account
+      containers:
+        - name: main
+          imagePullPolicy: "Always"
+          image: docker-hub.middleware.biz/gitcall/servicespimp:aVersion
+          args:
+            - --config=/ebsmnt/services-pimp/config/pimp.json
+          env:
+            - name: GOPS_CONFIG_DIR
+              value: /tmp            
+          ports:
+          - containerPort: 8080          
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "200Mi"
+            requests:
+              cpu: "300m"
+              memory: "400Mi"
+          volumeMounts:
+            - name: config
+              mountPath: /ebsmnt/services-pimp/config/pimp.json
+              subPath: "pimp.json"
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            runAsUser: 501
+            runAsGroup: 501
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            capabilities:
+              drop:
+                - NET_ADMIN
+                - SYS_ADMIN
+                - MAC_ADMIN
+                - SETUID
+                - SETGID
+                - FOWNER
+                - CHOWN
+                - MKNOD
+      volumes:
+        - name: config
+          configMap:
+            name: RELEASE-NAME-gitcall-pimp-config
+        - name: tmp
+          emptyDir: {}

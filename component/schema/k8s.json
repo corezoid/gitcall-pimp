@@ -1,0 +1,44 @@
+{
+	"type": "object",
+	"$id": "https://git.corezoid.com/gitcall/services-pimp/blob/develop/internal/pkg/k8s/Config.json",
+	"required": [ "auth" ],
+	"description": "k8s related settings",
+	"properties": {
+		"apply_timeout_ms": { "type":  "number", "min": 0, "max": 1000000, "default": 10000, "description": "Maximum time Pimp should wait response from k8s before giving up."},
+		"namespace_cache_ms": { "type":  "number", "min": 0, "max": 1000000, "default": 86400, "description": "Namespaces that created with Pimp could be cached to reduce load on k8s API.\nCache is lost on Pimp restart."},
+		"secrets_cache_ms": { "type":  "number", "min": 0, "max": 1000000, "default": 86400, "description": "Secrets that created with Pimp could be cached to reduce load on k8s API.\nCache is lost on Pimp restart."},
+		"image_pull_secrets": {
+			"type": "array",
+			"items": { 
+				"type": "object", 
+				"required": [ "secret_name", "docker_config" ],
+				"description": "Pimp creates .dockerconfig secret and adds it to every deployment it performs.",
+				"properties": {
+					"secret_name": { "type": "string", "minLength": 1, "maxLength": 10000, "default": "" },
+					"docker_config": { "$ref": "https://git.corezoid.com/gitcall/services-pimp/internal/pkg/dockerconfig/meta.go#Config" }
+				}
+			}
+		},
+		"auth": {
+			"description": "Defines how Pimp should authorize in k8s cluster",
+			"oneOf": [
+				{
+					"type": "object",
+					"required": [ "kubeconfig" ],
+					"properties": {
+						"kubeconfig": { "type": "string", "minLength": 1, "maxLength": 10000, "default": "" },
+						"kubecontext": { "type": "string", "minLength": 1, "maxLength": 10000, "default": "" }
+					}
+				},
+				{
+					"type": "object",
+					"cz:default": true,
+					"required": [ "in_cluster" ],
+					"properties": {
+						"in_cluster": { "type": "boolean", "default": true }
+					}
+				}
+			]
+		}
+	}
+}

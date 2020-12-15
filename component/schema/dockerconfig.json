@@ -1,0 +1,21 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://git.corezoid.com/gitcall/services-pimp/internal/pkg/dockerconfig/meta.go#Config",
+	"type": "object",
+	"description": "Defines docker registry credentials. Credentials will be used as imagePullSecretes to run images.",
+	"properties": {
+		"auths": { 
+			"type": "object",
+			"patternProperties": {
+				".+": { 
+					"type": "object",
+					"properties": {
+						"username": { "type": "string", "minLength": 0, "maxLength": 10000 },
+						"password": { "type": "string", "minLength": 0, "maxLength": 10000 },
+						"auth": { "type": "string", "minLength": 0, "maxLength": 10000 }
+					}
+				}
+			}
+		}
+	}
+}

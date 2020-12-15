@@ -1,0 +1,68 @@
+gitcall_pimp:
+    config:
+        # [REQUIRED]: undefined.
+        api:
+            # [REQUIRED]: object.
+            server:
+                # [REQUIRED]: object.
+                host: '0.0.0.0'
+                # [REQUIRED]: string.
+                port: 8080
+                # [REQUIRED]: number.
+            auth:
+                "token_description": "abcdfg12345678901234567890abcdfg"
+        k8s:
+            # [REQUIRED]: undefined.
+            apply_timeout_ms: 10000
+            auth:
+                # [REQUIRED]: undefined.
+                in_cluster: true
+                # [REQUIRED]: boolean.
+            image_pull_secrets: []
+            namespace_cache_ms: 86400
+            secrets_cache_ms: 86400
+        sentry:
+            enabled: false
+    helm:
+        # [REQUIRED]: object.
+        image_pull_policy: 'Always'
+        # [REQUIRED]: string.
+        image_pull_secrets: []
+        # [REQUIRED]: array.
+        ingress_host: ''
+        # [REQUIRED]: string.
+        cluster_role_name: "a_cluster_name"
+        # [REQUIRED]: string.
+        cluster_role_binding_name: "a_cluster_binding_name"
+        # [REQUIRED]: string.
+        max_replicas: 1
+        # [REQUIRED]: number.
+        min_replicas: 1
+        # [REQUIRED]: number.
+        secrets: []
+        # [REQUIRED]: array.
+        resources:
+            limits:
+                cpu: 100m
+                memory: 200Mi
+            requests:
+                cpu: 300m
+                memory: 400Mi
+release:
+    name: 'gitcall_pimp_release'
+    helm:
+        enabled: true
+        chart:
+            version: "0.1.1"
+            description: "The shim layer over K8S API."
+        context: ''
+        namespace: 'ns'
+        release: 'rls'
+        deploy: ['gitcall_pimp']
+    require:
+        gitcall_pimp: 'aVersion'
+    repositories:
+        gitcall_pimp:
+            source: 'local'
+            local:
+                path: '../../'

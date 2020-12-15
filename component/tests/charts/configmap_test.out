@@ -1,0 +1,36 @@
+# Source: gitcall_pimp_release/charts/gitcall_pimp/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: RELEASE-NAME-gitcall-pimp-config
+  labels:
+    release: "RELEASE-NAME"
+    app: "gitcall"
+    tier: "pimp"
+data:
+  pimp.json: |
+    {
+      "api": {
+        "auth": {
+          "token_description": "abcdfg12345678901234567890abcdfg"
+        },
+        "server": {
+          "host": "0.0.0.0",
+          "port": 8080
+        }
+      },
+      "k8s": {
+        "apply_timeout_ms": 10000,
+        "auth": {
+          "in_cluster": true
+        },
+        "image_pull_secrets": [],
+        "namespace_cache_ms": 86400,
+        "secrets_cache_ms": 86400
+      },
+      "sentry": {
+        "enabled": false
+      }
+    }
+---
+# Source: gitcall_pimp_release/charts/gitcall_pimp/templates/access.yaml

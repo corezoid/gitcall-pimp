@@ -1,0 +1,15 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schema.corezoid.com/gitcall/gitcall-pimp/main.json",
+	"type": "object",
+	"required": ["gitcall_pimp"],
+	"properties": {
+		"gitcall_pimp": {
+			"type": "object",
+			"required": ["config"],
+			"properties": {
+				"config": { "$ref": "https://git.corezoid.com/gitcall/services-pimp/blob/develop/internal/app/servicespimp/Config.json" }
+			}
+		}
+	}
+}

@@ -1,0 +1,21 @@
+# Source: gitcall_pimp_release/charts/gitcall_pimp/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-gitcall-pimp-service
+  labels:
+    release: "RELEASE-NAME"
+    app: "gitcall"
+    tier: "pimp"
+spec:
+  selector:
+    release: "RELEASE-NAME"
+    app: "gitcall"
+    tier: "pimp"
+    http: "true"
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+# Source: gitcall_pimp_release/charts/gitcall_pimp/templates/deployment.yaml

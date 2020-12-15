@@ -1,0 +1,2 @@
+level=error msg="gitcall_pimp.helm.cluster_role_binding_name: String length must be greater than or equal to 1"
+level=error msg="gitcall_pimp.helm.cluster_role_name: String length must be greater than or equal to 1"

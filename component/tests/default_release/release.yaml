@@ -1,0 +1,35 @@
+gitcall_pimp:
+    # [REQUIRED]: object.
+    config:
+        # [REQUIRED]: undefined.
+        api:
+            # [REQUIRED]: object.
+            server:
+                # [REQUIRED]: object.
+                host: '0.0.0.0'
+                # [REQUIRED]: string.
+                port: 8080
+                # [REQUIRED]: number.
+            auth:
+                "token_description": "abcdfg12345678901234567890abcdfg" 
+        k8s:
+            # [REQUIRED]: undefined.
+            apply_timeout_ms: 10000
+            auth:
+                # [REQUIRED]: undefined.
+                in_cluster: true
+                # [REQUIRED]: boolean.
+            image_pull_secrets: []
+            namespace_cache_ms: 86400
+            secrets_cache_ms: 86400
+        sentry:
+            enabled: false
+release:
+    name: 'gitcall_pimp_release'
+    require:
+        gitcall_pimp: 'aVersion'
+    repositories:
+        gitcall_pimp:
+            source: 'local'
+            local:
+                path: '../../'
