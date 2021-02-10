@@ -48,6 +48,11 @@ gitcall_pimp:
             requests:
                 cpu: 300m
                 memory: 400Mi
+    logger:
+        format: 'json'
+        level: 'trace'
+        output: 'stdout'
+
 release:
     name: 'gitcall_pimp_release'
     helm:

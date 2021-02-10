@@ -40,6 +40,9 @@ spec:
           image: docker-hub.middleware.biz/gitcall/servicespimp:aVersion
           args:
             - --config=/ebsmnt/services-pimp/config/pimp.json
+            - --logger=stdout
+            - --logger-level=trace
+            - --logger-format=json
           env:
             - name: GOPS_CONFIG_DIR
               value: /tmp            

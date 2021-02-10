@@ -42,6 +42,17 @@ spec:
           image: {{ print .Values.image ":" $rls.require.gitcall_pimp }}
           args:
             - --config=/ebsmnt/services-pimp/config/{{ .Values.config_file }}
+            {{- if .Values.logger }}
+            {{- if .Values.logger.output }}
+            - --logger={{ .Values.logger.output }}
+            {{- end }}
+            {{- if .Values.logger.level }}
+            - --logger-level={{ .Values.logger.level }}
+            {{- end }}
+            {{- if .Values.logger.format }}
+            - --logger-format={{ .Values.logger.format }}
+            {{- end }}
+            {{- end }}
           env:
             - name: GOPS_CONFIG_DIR
               value: /tmp

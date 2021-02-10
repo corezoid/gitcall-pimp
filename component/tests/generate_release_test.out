@@ -93,6 +93,10 @@ gitcall_pimp:
         # levels: ['panic', 'fatal', 'error', 'error']
         sentry:
             enabled: false
+    logger:
+        format: 'text'
+        level: 'debug'
+        output: 'stderr'
 release:
     name: 'gitcall_pimp_release'
     require:

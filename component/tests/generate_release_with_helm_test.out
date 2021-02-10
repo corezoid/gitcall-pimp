@@ -92,6 +92,10 @@ gitcall_pimp:
         # levels: ['panic', 'fatal', 'error', 'error']
         sentry:
             enabled: false
+    logger:
+        format: 'text'
+        level: 'debug'
+        output: 'stderr'
     # [REQUIRED]: object.
     helm:
         # [REQUIRED]: string.
