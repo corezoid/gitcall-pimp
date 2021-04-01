@@ -25,6 +25,8 @@ data:
           "in_cluster": true
         },
         "image_pull_secrets": [],
+        "manage_namespaces": true,
+        "manage_networkpolicies": true,
         "namespace_cache_ms": 86400,
         "secrets_cache_ms": 86400
       },

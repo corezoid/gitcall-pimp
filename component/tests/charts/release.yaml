@@ -21,6 +21,10 @@ gitcall_pimp:
             image_pull_secrets: []
             namespace_cache_ms: 86400
             secrets_cache_ms: 86400
+            # Allow/Deny CRUD operations on k8s namespaces
+            manage_namespaces: true
+            # Allow/Deny CRUD operations on k8s networkpolicies
+            manage_networkpolicies: true
         sentry:
             enabled: false
     helm:

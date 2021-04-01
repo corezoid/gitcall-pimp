@@ -47,6 +47,10 @@ gitcall_pimp:
                 # [REQUIRED]: boolean.
                 in_cluster: true
             image_pull_secrets: []
+            # Allow/Deny CRUD operations on k8s namespaces
+            manage_namespaces: false
+            # Allow/Deny CRUD operations on k8s networkpolicies
+            manage_networkpolicies: false
             # Namespaces that created with Pimp could be cached to reduce load on k8s API.
             # Cache is lost on Pimp restart.
             namespace_cache_ms: 86400
