@@ -12,7 +12,6 @@ spec:
     release: "RELEASE-NAME"
     app: "gitcall"
     tier: "pimp"
-    http: "true"
   ports:
   - protocol: TCP
     port: 8080

@@ -7,7 +7,7 @@
 		"sentry": { "$ref": "https://git.corezoid.com/go-pkgs/sentry/meta.go#ConfigSchema" },
 		"api": {
 			"type": "object",
-			"required": [ "server", "auth" ],
+			"required": [ "server" ],
 			"description": "Pimp API endpoint.",
 			"properties": {
 				"server": {
@@ -17,19 +17,10 @@
 						"host": { "type": "string", "default": "0.0.0.0" },
 						"port": { "type": "number", "minimum": 1, "maximum": 65535, "default": 8080 }
 					}
-				},
-				"auth": {
-					"type": "object",
-					"description": "Defines a list of auth tokens. Pimp clients should call Pimp API with a token.\nAdd header Authorization: abscdToken.\nThe property name does not take part in auth process.\nUsed by humans to add some extra meaning to the token.",
-					"minProperties": 1,
-					"patternProperties": {
-						".+": { "type": "string", "minLength": 32, "maxLength": 1000, "default": "" }
-					}
 				}
 			}
 		},
 		"k8s": { "$ref": "https://git.corezoid.com/gitcall/services-pimp/blob/develop/internal/pkg/k8s/Config.json" },
-		"promserver": { "$ref": "https://git.corezoid.com/go-pkgs/promapp/meta.go#ConfigSchema" },
 		"gopsagent": { "$ref": "https://git.corezoid.com/go-pkgs/gopsagent/meta.go#ConfigSchema" }
 	}
 }
