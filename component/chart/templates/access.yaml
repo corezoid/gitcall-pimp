@@ -1,5 +1,6 @@
+{{- $cfg := .Values.config }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ .Values.helm.cluster_role_name | quote }}
@@ -8,9 +9,11 @@ metadata:
     app: {{ .Values.helm.app | quote }}
     tier: {{ .Values.helm.tier | quote }}
 rules:
+{{- if $cfg.k8s.manage_namespaces }}
 - apiGroups: [""]
   resources: ["namespaces"]
   verbs: ["get", "list", "create", "delete", "update"]
+{{- end }}
 - apiGroups: [""]
   resources: ["pods"]
   verbs: ["get", "list", "create", "delete", "update"]
@@ -29,8 +32,13 @@ rules:
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["get", "list", "create", "delete", "update"]
+{{- if $cfg.k8s.manage_networkpolicies }}
+- apiGroups: ["crd.projectcalico.org"]
+  resources: ["networkpolicies"]
+  verbs: ["get", "list", "create", "delete", "patch"]
+{{- end }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ .Values.helm.cluster_role_binding_name | quote }}

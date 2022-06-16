@@ -11,6 +11,9 @@ data:
   pimp.json: |
     {
       "api": {
+        "auth": {
+          "token_description": "abcdfg12345678901234567890abcdfg"
+        },
         "server": {
           "host": "0.0.0.0",
           "port": 8080
@@ -22,6 +25,8 @@ data:
           "in_cluster": true
         },
         "image_pull_secrets": [],
+        "manage_namespaces": true,
+        "manage_networkpolicies": true,
         "namespace_cache_ms": 86400,
         "secrets_cache_ms": 86400
       },

@@ -10,6 +10,8 @@ gitcall_pimp:
                 # [REQUIRED]: string.
                 port: 8080
                 # [REQUIRED]: number.
+            auth:
+                "token_description": "abcdfg12345678901234567890abcdfg" 
         k8s:
             # [REQUIRED]: undefined.
             apply_timeout_ms: 10000

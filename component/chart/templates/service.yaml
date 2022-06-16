@@ -12,6 +12,7 @@ spec:
     release: {{ .Release.Name | quote }}
     app: {{ .Values.helm.app | quote }}
     tier: {{ .Values.helm.tier | quote }}
+    http: "true"
   ports:
   - protocol: TCP
     port: {{ $cfg.api.server.port }}

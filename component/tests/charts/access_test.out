@@ -1,5 +1,5 @@
 # Source: gitcall_pimp_release/charts/gitcall_pimp/templates/access.yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: "a_cluster_name"
@@ -29,5 +29,8 @@ rules:
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["get", "list", "create", "delete", "update"]
+- apiGroups: ["crd.projectcalico.org"]
+  resources: ["networkpolicies"]
+  verbs: ["get", "list", "create", "delete", "patch"]
 ---
 # Source: gitcall_pimp_release/charts/gitcall_pimp/templates/access.yaml
