@@ -7,8 +7,6 @@
 		"apply_timeout_ms": { "type":  "number", "min": 0, "max": 1000000, "default": 10000, "description": "Maximum time Pimp should wait response from k8s before giving up."},
 		"namespace_cache_ms": { "type":  "number", "min": 0, "max": 1000000, "default": 86400, "description": "Namespaces that created with Pimp could be cached to reduce load on k8s API.\nCache is lost on Pimp restart."},
 		"secrets_cache_ms": { "type":  "number", "min": 0, "max": 1000000, "default": 86400, "description": "Secrets that created with Pimp could be cached to reduce load on k8s API.\nCache is lost on Pimp restart."},
-		"manage_namespaces": { "type": "boolean", "default": false, "description": "Allow/Deny CRUD operations on k8s namespaces" },
-		"manage_networkpolicies": { "type": "boolean", "default": false, "description": "Allow/Deny CRUD operations on k8s networkpolicies" },
 		"image_pull_secrets": {
 			"type": "array",
 			"items": { 
