@@ -5,6 +5,15 @@ gitcall_pimp:
         # Pimp API endpoint.
         api:
             # [REQUIRED]: object.
+            # Defines a list of auth tokens. Pimp clients should call Pimp API with a token.
+            # Add header Authorization: abscdToken.
+            # The property name does not take part in auth process.
+            # Used by humans to add some extra meaning to the token.
+            # Property patterns:
+            # .+:
+            # ''
+            auth: {}
+            # [REQUIRED]: object.
             server:
                 # [REQUIRED]: string.
                 host: '0.0.0.0'
@@ -37,12 +46,43 @@ gitcall_pimp:
                 # [REQUIRED]: boolean.
                 in_cluster: true
             image_pull_secrets: []
+            # Allow/Deny CRUD operations on k8s namespaces
+            manage_namespaces: false
+            # Allow/Deny CRUD operations on k8s networkpolicies
+            manage_networkpolicies: false
             # Namespaces that created with Pimp could be cached to reduce load on k8s API.
             # Cache is lost on Pimp restart.
             namespace_cache_ms: 86400
             # Secrets that created with Pimp could be cached to reduce load on k8s API.
             # Cache is lost on Pimp restart.
             secrets_cache_ms: 86400
+        # Expose prometheus metrics. There are two ways promapp can work
+        #  * scrape - the app starts metrics server that prometheus can scrape (preferred)
+        # * push - the app itself sends metrics to prometheus server
+        # Alternative settings:
+        # 0#
+        # [REQUIRED]: boolean.
+        # enabled: true
+        # [REQUIRED]: string.
+        # metrics_host: ''
+        # [REQUIRED]: number.
+        # metrics_port: 0
+        # [REQUIRED]: string.
+        # type: 'scrape'
+
+        # 1#
+        # [REQUIRED]: boolean.
+        # enabled: true
+        # [REQUIRED]: string.
+        # push_job: ''
+        # [REQUIRED]: number.
+        # push_period_sec: 60
+        # [REQUIRED]: string.
+        # push_url: ''
+        # [REQUIRED]: string.
+        # type: 'push'
+        promserver:
+            enabled: false
         # Sentry is a tool for tracking errors (https://sentry.io/welcome/).
         # Alternative settings:
         # 0#
@@ -56,6 +96,10 @@ gitcall_pimp:
         # levels: ['panic', 'fatal', 'error', 'error']
         sentry:
             enabled: false
+    logger:
+        format: 'text'
+        level: 'debug'
+        output: 'stderr'
     # [REQUIRED]: object.
     helm:
         # [REQUIRED]: string.
@@ -72,6 +116,19 @@ gitcall_pimp:
         max_replicas: 1
         # [REQUIRED]: number.
         min_replicas: 1
+        resources:
+            # [REQUIRED]: object.
+            limits:
+                # [REQUIRED]: string.
+                cpu: '500m'
+                # [REQUIRED]: string.
+                memory: '500Mi'
+            # [REQUIRED]: object.
+            requests:
+                # [REQUIRED]: string.
+                cpu: '500m'
+                # [REQUIRED]: string.
+                memory: '500Mi'
         # [REQUIRED]: array.
         secrets: []
 release:

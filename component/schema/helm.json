@@ -56,7 +56,8 @@
                   }
                 }
               }
-            }
+            },
+            "resources": { "$ref": "https://schema.corezoid.com/packages/kube/container_resources_v1.json" }
           }
         }
       }

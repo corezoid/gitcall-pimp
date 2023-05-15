@@ -22,13 +22,17 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a86264ea20e3f5d17241e83dec547d3ff3364727fa5163ac410b7354abeefa16
+        checksum/config: ede5f85aa1fa0845efd245bc52377eb034d0d27a6992bc2bf60056ace51bc603
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9100"
+        prometheus.io/scrape: "true"
       labels:
         release: "RELEASE-NAME"
         app: "gitcall"
         tier: "pimp"
+        http: "true"
     spec:
-      terminationGracePeriodSeconds: 40
+      terminationGracePeriodSeconds: 240 # there is apply\delete buffer, we should wait till it is empty. 
       serviceAccountName: RELEASE-NAME-gitcall-pimp-service-account
       containers:
         - name: main
@@ -36,23 +40,47 @@ spec:
           image: docker-hub.middleware.biz/gitcall/servicespimp:aVersion
           args:
             - --config=/ebsmnt/services-pimp/config/pimp.json
+            - --logger=stdout
+            - --logger-level=trace
+            - --logger-format=json
           env:
             - name: GOPS_CONFIG_DIR
               value: /tmp            
           ports:
-          - containerPort: 8080
+          - containerPort: 8080          
           resources:
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: "100m"
+              memory: "200Mi"
             requests:
-              cpu: 100m
-              memory: 200Mi
+              cpu: "300m"
+              memory: "400Mi"
           volumeMounts:
             - name: config
               mountPath: /ebsmnt/services-pimp/config/pimp.json
               subPath: "pimp.json"
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            runAsUser: 501
+            runAsGroup: 501
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            capabilities:
+              drop:
+                - NET_ADMIN
+                - SYS_ADMIN
+                - MAC_ADMIN
+                - SETUID
+                - SETGID
+                - FOWNER
+                - CHOWN
+                - MKNOD
       volumes:
         - name: config
           configMap:
             name: RELEASE-NAME-gitcall-pimp-config
+        - name: tmp
+          emptyDir: {}
